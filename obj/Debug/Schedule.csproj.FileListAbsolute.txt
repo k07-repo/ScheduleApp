@@ -1,9 +1,0 @@
-C:\Users\Emiya\source\repos\Schedule\Schedule\bin\Debug\Schedule.exe.config
-C:\Users\Emiya\source\repos\Schedule\Schedule\bin\Debug\Schedule.exe
-C:\Users\Emiya\source\repos\Schedule\Schedule\bin\Debug\Schedule.pdb
-C:\Users\Emiya\source\repos\Schedule\Schedule\obj\Debug\Schedule.csprojAssemblyReference.cache
-C:\Users\Emiya\source\repos\Schedule\Schedule\obj\Debug\Schedule.Properties.Resources.resources
-C:\Users\Emiya\source\repos\Schedule\Schedule\obj\Debug\Schedule.csproj.GenerateResource.cache
-C:\Users\Emiya\source\repos\Schedule\Schedule\obj\Debug\Schedule.csproj.CoreCompileInputs.cache
-C:\Users\Emiya\source\repos\Schedule\Schedule\obj\Debug\Schedule.exe
-C:\Users\Emiya\source\repos\Schedule\Schedule\obj\Debug\Schedule.pdb
