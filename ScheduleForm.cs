@@ -21,21 +21,28 @@ namespace ScheduleApp
         public ScheduleForm()
         {
             InitializeComponent();
+
+            //set the minimum date here because the property window doesn't like it
+            dateTimePicker1.MinDate = DateTime.Today;
+
+            comboBox1.Items.Add("Current Items");
+            comboBox1.Items.Add("Completed Items");
         }
 
         private void Schedule_Load(object sender, EventArgs e)
         {
             dbCon = DBConnection.Instance();
             dbCon.DatabaseName = "myDB";
-            loadData();
+            loadData("scheduledTasks");
         }
 
-        private void loadData()
+   
+        private void loadData(String tableName)
         {
             DataSet dataSet = new DataSet();
             if (dbCon.IsConnected())
             {
-                String query = "SELECT * FROM scheduledTasks";
+                String query = String.Format("SELECT * FROM {0}", tableName);
                 var cmd = new MySqlCommand(query, dbCon.Connection);
 
                 MySqlDataAdapter mySqlAdapter = new MySqlDataAdapter(cmd);
@@ -55,10 +62,25 @@ namespace ScheduleApp
         {
             if (dbCon.IsConnected())
             {
-                String query = String.Format("INSERT INTO scheduledTasks VALUES (NULL, \"{0}\", \'2019-11-30\', false)", textBox2.Text);
+                DateTime dateTime = dateTimePicker1.Value;
+                String dateString = dateTime.ToString("yyyy-MM-dd");
+
+                String query = String.Format("INSERT INTO scheduledTasks VALUES (NULL, \"{0}\", \'{1}\', false)", textBox2.Text, dateString);
                 var cmd = new MySqlCommand(query, dbCon.Connection);
                 cmd.ExecuteNonQuery();
-                loadData();
+                loadData("scheduledTasks");
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text.Equals("Current Items"))
+            {
+                loadData("scheduledTasks");
+            }
+            else if(comboBox1.Text.Equals("Completed Items"))
+            {
+                loadData("completedTasks");
             }
         }
     }
