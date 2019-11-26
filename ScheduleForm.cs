@@ -44,10 +44,11 @@ namespace ScheduleApp
         private void Schedule_Load(object sender, EventArgs e)
         {
             createConnection();
-            loadData("scheduledTasks");
+            loadData(dataGridView3, "scheduledTasks");
+            loadData(dataGridView1, "dailyTasks");
         }
    
-        private void loadData(String tableName)
+        private void loadData(DataGridView dataGridView, String tableName)
         {
             DataSet dataSet = new DataSet();
             if (dbCon.IsConnected())
@@ -57,8 +58,8 @@ namespace ScheduleApp
 
                 MySqlDataAdapter mySqlAdapter = new MySqlDataAdapter(cmd);
                 mySqlAdapter.Fill(dataSet);
-                dataGridView3.AutoGenerateColumns = true; //this is really important apparently
-                dataGridView3.DataSource = dataSet.Tables[0];
+                dataGridView.AutoGenerateColumns = true; //this is really important apparently
+                dataGridView.DataSource = dataSet.Tables[0];
                 //dbCon.Close();
             }
         } 
@@ -73,7 +74,7 @@ namespace ScheduleApp
                 String query = String.Format("INSERT INTO scheduledTasks VALUES (NULL, \"{0}\", \'{1}\', false)", textBox2.Text, dateString);
                 var cmd = new MySqlCommand(query, dbCon.Connection);
                 cmd.ExecuteNonQuery();
-                loadData("scheduledTasks");
+                loadData(dataGridView3, "scheduledTasks");
             }
         }
 
@@ -81,12 +82,12 @@ namespace ScheduleApp
         {
             if (comboBox1.Text.Equals(CURRENT_TABLE_NAME))
             {
-                loadData("scheduledTasks");
+                loadData(dataGridView3, "scheduledTasks");
                 button3.Enabled = false;
             }
             else if(comboBox1.Text.Equals(COMPLETED_TABLE_NAME))
             {
-                loadData("completedTasks");                
+                loadData(dataGridView3, "completedTasks");                
                 button3.Enabled = true;
             }
         }
@@ -132,7 +133,7 @@ namespace ScheduleApp
                 }
             }         
 
-            loadData("scheduledTasks");
+            loadData(dataGridView3, "scheduledTasks");
         }
 
         //Clears the completed tasks table
@@ -143,7 +144,31 @@ namespace ScheduleApp
                 String query = "DELETE FROM completedTasks";
                 var cmd = new MySqlCommand(query, dbCon.Connection);
                 cmd.ExecuteNonQuery();
-                loadData("completedTasks");
+                loadData(dataGridView3, "completedTasks");
+            }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            if (dbCon.IsConnected())
+            {
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (dbCon.IsConnected())
+            {
+
+                String desc = textBox1.Text;
+                String startTime = textBox3.Text;
+                String endTime = textBox4.Text;
+
+
+                String query = String.Format("INSERT INTO dailyTasks VALUES (NULL, \"{0}\", \"{1}\", \"{2}\")", desc, startTime, endTime);
+                var cmd = new MySqlCommand(query, dbCon.Connection);
+                cmd.ExecuteNonQuery();
+                loadData(dataGridView1, "dailyTasks");
             }
         }
     }
