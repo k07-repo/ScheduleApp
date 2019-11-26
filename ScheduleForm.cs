@@ -14,28 +14,38 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 
 namespace ScheduleApp
-{
+{    
     public partial class ScheduleForm : Form
-    {       
-        private DBConnection dbCon;
+    {
+        private string CURRENT_TABLE_NAME = "Current Items";
+        private string COMPLETED_TABLE_NAME = "Completed Items";
+
+        private DBConnection dbCon = DBConnection.Instance();
+
         public ScheduleForm()
         {
             InitializeComponent();
 
             //set the minimum date here because the property window doesn't like it
             dateTimePicker1.MinDate = DateTime.Today;
+          
+            //set up the combo box
+            comboBox1.Items.Add(CURRENT_TABLE_NAME);
+            comboBox1.Items.Add(COMPLETED_TABLE_NAME);
+            comboBox1.SelectedIndex = 0;
+        }
 
-            comboBox1.Items.Add("Current Items");
-            comboBox1.Items.Add("Completed Items");
+        private void createConnection()
+        {      
+            dbCon = DBConnection.Instance();
+            dbCon.DatabaseName = "myDB";
         }
 
         private void Schedule_Load(object sender, EventArgs e)
         {
-            dbCon = DBConnection.Instance();
-            dbCon.DatabaseName = "myDB";
+            createConnection();
             loadData("scheduledTasks");
         }
-
    
         private void loadData(String tableName)
         {
@@ -53,11 +63,6 @@ namespace ScheduleApp
             }
         } 
 
-        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             if (dbCon.IsConnected())
@@ -74,12 +79,70 @@ namespace ScheduleApp
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox1.Text.Equals("Current Items"))
+            if (comboBox1.Text.Equals(CURRENT_TABLE_NAME))
             {
                 loadData("scheduledTasks");
+                button3.Enabled = false;
             }
-            else if(comboBox1.Text.Equals("Completed Items"))
+            else if(comboBox1.Text.Equals(COMPLETED_TABLE_NAME))
             {
+                loadData("completedTasks");                
+                button3.Enabled = true;
+            }
+        }
+
+        //Marks a task completed
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Get all changes to the table
+            var changes = ((DataTable)dataGridView3.DataSource).GetChanges(DataRowState.Modified);
+            if(changes == null)
+            {
+                return;
+            }          
+            var changedRows = changes.Rows;
+        
+            for(int index = 0; index < changedRows.Count; index++)
+            {
+                DataRow row = changedRows[index];
+                String id = row[0].ToString();
+                String desc = row[1].ToString();
+                String enddate = row[2].ToString();
+                DateTime date = DateTime.Parse(enddate);
+                enddate = date.ToString("yyyy-MM-dd");
+
+                String complete = row[3].ToString();
+                             
+                if (Boolean.Parse(complete) != true)
+                {
+                    //Do nothing if the task isn't marked as complete
+                    continue; 
+                }
+                else
+                {
+                    //Place the item into the completed tasks SQL table (the same values, but completed is set to true)
+                    String query = String.Format("INSERT INTO completedTasks VALUES ({0}, \"{1}\", \'{2}\', true)", id, desc, enddate);
+                    var cmd = new MySqlCommand(query, dbCon.Connection);
+                    cmd.ExecuteNonQuery();
+
+                    //Delete it from the scheduled tasks table (can be done with just the ID)
+                    query = String.Format("DELETE FROM scheduledTasks WHERE id={0}", id);
+                    cmd = new MySqlCommand(query, dbCon.Connection);
+                    cmd.ExecuteNonQuery();
+                }
+            }         
+
+            loadData("scheduledTasks");
+        }
+
+        //Clears the completed tasks table
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if(dbCon.IsConnected())
+            {
+                String query = "DELETE FROM completedTasks";
+                var cmd = new MySqlCommand(query, dbCon.Connection);
+                cmd.ExecuteNonQuery();
                 loadData("completedTasks");
             }
         }
