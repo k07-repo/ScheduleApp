@@ -148,6 +148,7 @@ namespace ScheduleApp
             }
         }
 
+      
         private void label3_Click(object sender, EventArgs e)
         {
             if (dbCon.IsConnected())
@@ -165,11 +166,50 @@ namespace ScheduleApp
                 String endTime = textBox4.Text;
 
 
-                String query = String.Format("INSERT INTO dailyTasks VALUES (NULL, \"{0}\", \"{1}\", \"{2}\")", desc, startTime, endTime);
+                String query = String.Format("INSERT INTO dailyTasks VALUES (NULL, \"{0}\", \"{1}\", \"{2}\", false)", desc, startTime, endTime);
                 var cmd = new MySqlCommand(query, dbCon.Connection);
                 cmd.ExecuteNonQuery();
                 loadData(dataGridView1, "dailyTasks");
             }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+            //Get all changes to the table
+            var changes = ((DataTable)dataGridView1.DataSource).GetChanges(DataRowState.Modified);
+            if (changes == null)
+            {
+                return;
+            }
+            var changedRows = changes.Rows;
+
+            for (int index = 0; index < changedRows.Count; index++)
+            {
+                DataRow row = changedRows[index];
+                String id = row[0].ToString();
+                String complete = row[4].ToString();
+
+                if (Boolean.Parse(complete) != true)
+                {
+                    //Do nothing if the task isn't marked as complete
+                    continue;
+                }
+                else
+                {                        
+                    //Delete it from the daily tasks table (can be done with just the ID)
+                    String query = String.Format("DELETE FROM dailyTasks WHERE id={0}", id);
+                    var cmd = new MySqlCommand(query, dbCon.Connection);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            loadData(dataGridView1, "dailyTasks");
         }
     }
 }

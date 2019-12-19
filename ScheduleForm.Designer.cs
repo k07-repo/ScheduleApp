@@ -45,6 +45,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -140,7 +142,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(362, 306);
+            this.dataGridView1.Location = new System.Drawing.Point(362, 279);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(413, 150);
             this.dataGridView1.TabIndex = 10;
@@ -148,7 +150,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 306);
+            this.label3.Location = new System.Drawing.Point(21, 282);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 11;
@@ -158,7 +160,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 337);
+            this.label4.Location = new System.Drawing.Point(19, 309);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 12;
@@ -166,7 +168,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(88, 360);
+            this.button4.Location = new System.Drawing.Point(87, 332);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(242, 23);
             this.button4.TabIndex = 13;
@@ -176,30 +178,52 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(88, 303);
+            this.textBox1.Location = new System.Drawing.Point(87, 279);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(243, 20);
             this.textBox1.TabIndex = 14;
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(88, 334);
+            this.textBox3.Location = new System.Drawing.Point(87, 306);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(53, 20);
             this.textBox3.TabIndex = 15;
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(175, 334);
+            this.textBox4.Location = new System.Drawing.Point(192, 306);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(54, 20);
             this.textBox4.TabIndex = 16;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(158, 309);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(16, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "to";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(397, 446);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(337, 23);
+            this.button5.TabIndex = 18;
+            this.button5.Text = "Remove Selected";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // ScheduleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(852, 490);
+            this.ClientSize = new System.Drawing.Size(810, 490);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox1);
@@ -217,8 +241,9 @@
             this.Controls.Add(this.Description);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.dataGridView3);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ScheduleForm";
-            this.Text = "b";
+            this.Text = "Schedule";
             this.Load += new System.EventHandler(this.Schedule_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -246,6 +271,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button5;
     }
 }
 
